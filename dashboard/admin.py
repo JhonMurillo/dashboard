@@ -6,7 +6,7 @@ from .models import Persona, InformacionSalud, CalidadVida
 # from django.db.models import Q, Count
 
 # # Register your models here.
-admin.site.register(CalidadVida)
+# admin.site.register(CalidadVida)
 
 # admin.site.unregister(User)
 # admin.site.unregister(Group)
@@ -27,3 +27,17 @@ admin.site.register(CalidadVida)
 #     def count_informacion(self, obj):
 #         count_information = InformacionSalud.objects.filter(persona=obj)
 #         return count_information.count()
+
+@admin.register(CalidadVida)
+class CalidadVidaAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'categoria', 'sub_categoria', 'rango', 'cantidad', 'fecha_creacion')
+    list_display_links = ('pk', 'categoria', 'sub_categoria')
+    search_fields = ['categoria', 'sub_categoria']
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj: # editing an existing object
+            return self.readonly_fields + ('categoria', 'sub_categoria', 'rango')
+        return self.readonly_fields
+
+    def has_delete_permission(self, request, obj=None):
+        return False

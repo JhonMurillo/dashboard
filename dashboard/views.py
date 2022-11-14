@@ -9,8 +9,8 @@ from django.views.generic import ListView, DetailView, \
 # Create your views here.
 
 def inicio(request):
-    labels, saludLabel = [], []
-    data, saludData = [], []
+    labels, saludLabel, movilidadLabel, viviendaLabel, estudioLabel = [], [], [], [], []
+    data, saludData , movilidadData, viviendaData, estudioData = [], [], [], [], []
 
     querysetMuertes = CalidadVida.objects.values().filter(categoria='Muertes')
     for entry in querysetMuertes:
@@ -22,8 +22,25 @@ def inicio(request):
     for entry in querysetSalud:
 
         saludData.append(entry['cantidad'])
-        saludLabel.append(entry['sub_categoria'])
-    
+        saludLabel.append(entry['sub_categoria']) 
+
+    querysetVivienda = CalidadVida.objects.values().filter(categoria='Vivienda')
+    for entry in querysetVivienda:
+
+        viviendaData.append(entry['cantidad'])
+        viviendaLabel.append(entry['sub_categoria']) 
+
+    querysetMovilidad = CalidadVida.objects.values().filter(categoria='Movilidad')
+    for entry in querysetMovilidad:
+
+        movilidadData.append(entry['cantidad'])
+        movilidadLabel.append(entry['sub_categoria'])  
+
+    querysetEstudio = CalidadVida.objects.values().filter(categoria='Estudio')
+    for entry in querysetEstudio:
+
+        estudioData.append(entry['cantidad'])
+        estudioLabel.append(entry['sub_categoria'])  
 
 
     return render(request, "dashboard/inicio.html", {
@@ -31,6 +48,12 @@ def inicio(request):
         'data': data,
         'saludData': saludData,
         'saludLabel': saludLabel,
+        'viviendaLabel': viviendaLabel,
+        'viviendaData': viviendaData,
+        'movilidadLabel': movilidadLabel,
+        'movilidadData': movilidadData,
+        'estudioLabel': estudioLabel,
+        'estudioData': estudioData,
     })
 
 class ListaPersona(ListView):

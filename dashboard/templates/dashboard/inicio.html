@@ -13,8 +13,11 @@
     <h3>Dashboard</h3>
 
     <div style="width: 100%; height: 20em; margin-top: 3em;">
-        <canvas id="myChart" style="margin-bottom: 30px; width: 90%; height: 100%;"></canvas>
+        <canvas id="muertes" style="margin-bottom: 30px; width: 90%; height: 100%;"></canvas>
         <canvas id="salud" style="margin-bottom: 30px; width: 90%; height: 100%;"></canvas>
+        <canvas id="vivienda" style="margin-bottom: 30px; width: 90%; height: 100%;"></canvas>
+        <canvas id="movilidad" style="margin-bottom: 30px; width: 90%; height: 100%;"></canvas>
+        <canvas id="estudio" style="margin-bottom: 30px; width: 90%; height: 100%;"></canvas>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
@@ -23,61 +26,13 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> -->
 
     <script languaje="javascript">
-        const ctx = document.getElementById('myChart');
+        const muertes = document.getElementById('muertes');
         const salud = document.getElementById('salud');
+        const vivienda = document.getElementById('vivienda');
+        const movilidad = document.getElementById('movilidad');
+        const estudio = document.getElementById('estudio');
 
-        // Render the chart
-        //     const chart = new Chart(ctx, {
-        //         type: 'line',
-        //         labels: ["Jan", "Feb", "Mar", "Apr"],
-        //         data: {
-        //             datasets: [
-        //                 {
-        //                     label: "Visitas",
-        //                     data: [100, 80, 150, 200],
-        //                     borderColor: 'rgba(20,20,220,0.5)',
-        //                     backgroundColor: 'rgba(0, 0, 0, 0)',
-        //                     lineTension: 0.3,
-        //   backgroundColor: "rgba(78, 115, 223, 0.05)",
-        //   borderColor: "rgba(78, 115, 223, 1)",
-        //   pointRadius: 3,
-        //   pointBackgroundColor: "rgba(78, 115, 223, 1)",
-        //   pointBorderColor: "rgba(78, 115, 223, 1)",
-        //   pointHoverRadius: 3,
-        //   pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-        //   pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-        //   pointHitRadius: 10,
-        //   pointBorderWidth: 2,
-        //                 },
-        //             ],
-        //         },
-        //         options: {
-        //             responsive: true,
-        //             scales: {
-        //                 xAxes: [
-        //                     {
-        //                         type: 'time',
-        //                         time: {
-        //                             unit: 'day',
-        //                             round: 'day',
-        //                             displayFormats: {
-        //                                 day: 'MMM D',
-        //                             },
-        //                         },
-        //                     },
-        //                 ],
-        //                 yAxes: [
-        //                     {
-        //                         ticks: {
-        //                             beginAtZero: true,
-        //                         },
-        //                     },
-        //                 ],
-        //             },
-        //         },
-        //     });
-
-        var myLineChart = new Chart(ctx, {
+        new Chart(muertes, {
             type: 'line',
             data: {
                 labels: {{ labels | safe }},
@@ -239,6 +194,277 @@
                 },
                 tooltips: {
                     backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function (tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ':' + tooltipItem.yLabel;
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(vivienda, {
+            type: 'line',
+            data: {
+                labels: {{ viviendaLabel | safe }},
+                datasets: [
+                    {
+                        label: "Vivienda Entre 15 a 45",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: {{ viviendaData|safe }}
+                    }
+                ],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: true,
+                            drawBorder: true
+                        },
+                        ticks: {
+                            maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return value;
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: true,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: true
+                },
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function (tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ':' + tooltipItem.yLabel;
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(movilidad, {
+            type: 'bar',
+            data: {
+                labels: {{ movilidadLabel | safe }},
+                datasets: [
+                    {
+                        label: "Movilidad Entre 15 a 45",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: {{ movilidadData|safe }}
+                    }
+                ],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: true,
+                            drawBorder: true
+                        },
+                        ticks: {
+                            maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return value;
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: true,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: true
+                },
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function (tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ':' + tooltipItem.yLabel;
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(estudio, {
+            type: 'line',
+            data: {
+                labels: {{ estudioLabel | safe }},
+                datasets: [
+                    {
+                        label: "Estudio Entre 15 a 45",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: {{ estudioData|safe }}
+                    }
+                ],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: true,
+                            drawBorder: true
+                        },
+                        ticks: {
+                            maxTicksLimit: 7
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return value;
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: true,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: true
+                },
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    
                     bodyFontColor: "#858796",
                     titleMarginBottom: 10,
                     titleFontColor: '#6e707e',
