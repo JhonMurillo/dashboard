@@ -25,7 +25,7 @@ SECRET_KEY = 'iw+b1%p9&zw_+#gx+m&aw$gza2-_p6$03s3&4p+4kbd8%o0b_8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dahsboard-calidad-vida.herokuapp.com','127.0.0.1', '0.0.0.0', 'localhost']
 
 
 # Application definition
